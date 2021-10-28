@@ -82,6 +82,8 @@ class App(Frame):
                 self.alpha = Entry(self.master, width=5).place(x=950, y=250)
                 self.sampling_ratio = Entry(self.master, width=5).place(x=950, y=350)
 
+                self.submit_button = Button(self.master, text="Submit").place(x=650, y=450)
+
         except KeyError:
             self.sub_string.set(value)
 
