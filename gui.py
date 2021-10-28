@@ -68,7 +68,20 @@ class App(Frame):
         try:
             if self.eff_options[value] == "FedGen":
                 self.sub_string.set(self.eff_options[value])
-                
+                Label(self.master, text="Number of Clients", bg="white").place(x=400, y=150)
+                Label(self.master, text="Learning Rate", bg="white").place(x=400, y=250)
+                Label(self.master, text="Total Epochs", bg="white").place(x=400, y=350)
+                Label(self.master, text="Dataset", bg="white").place(x=800, y=150)
+                Label(self.master, text="Alpha", bg="white").place(x=800, y=250)
+                Label(self.master, text="Sampling Rate", bg="white").place(x=800, y=350)
+
+                self.no_clients = Entry(self.master, width=5).place(x=550, y=150)
+                self.learning_rate = Entry(self.master, width=5).place(x=550, y=250)
+                self.total_epochs = Entry(self.master, width=5).place(x=550, y=350)
+                self.dataset = Entry(self.master, width=5).place(x=950, y=150)
+                self.alpha = Entry(self.master, width=5).place(x=950, y=250)
+                self.sampling_ratio = Entry(self.master, width=5).place(x=950, y=350)
+
         except KeyError:
             self.sub_string.set(value)
 
