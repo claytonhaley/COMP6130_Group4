@@ -75,14 +75,23 @@ class App(Frame):
                 Label(self.master, text="Alpha", bg="white").place(x=800, y=250)
                 Label(self.master, text="Sampling Rate", bg="white").place(x=800, y=350)
 
-                self.no_clients = Entry(self.master, width=5).place(x=550, y=150)
-                self.learning_rate = Entry(self.master, width=5).place(x=550, y=250)
-                self.total_epochs = Entry(self.master, width=5).place(x=550, y=350)
-                self.dataset = Entry(self.master, width=5).place(x=950, y=150)
-                self.alpha = Entry(self.master, width=5).place(x=950, y=250)
-                self.sampling_ratio = Entry(self.master, width=5).place(x=950, y=350)
+                self.entry_str1 = StringVar()
+                self.entry_str2 = StringVar()
+                self.entry_str3 = StringVar()
+                self.entry_str4 = StringVar()
+                self.entry_str5 = StringVar()
+                self.entry_str6 = StringVar()
+                self.no_clients = Entry(self.master, textvariable=self.entry_str1, width=5).place(x=550, y=150)
+                self.learning_rate = Entry(self.master, textvariable=self.entry_str2, width=5).place(x=550, y=250)
+                self.total_epochs = Entry(self.master, textvariable=self.entry_str3, width=5).place(x=550, y=350)
+                self.dataset = Entry(self.master, textvariable=self.entry_str4, width=5).place(x=950, y=150)
+                self.alpha = Entry(self.master, textvariable=self.entry_str5, width=5).place(x=950, y=250)
+                self.sampling_ratio = Entry(self.master, textvariable=self.entry_str6, width=5).place(x=950, y=350)
+                
+                
 
                 self.submit_button = Button(self.master, text="Submit").place(x=650, y=450)
+
 
         except KeyError:
             self.sub_string.set(value)
