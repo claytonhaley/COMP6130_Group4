@@ -1,5 +1,5 @@
 from tkinter import *
-
+import os
 
 class App(Frame):
     def __init__(self, master=None):
@@ -66,31 +66,36 @@ class App(Frame):
 
     def displayEffectiveness(self, value):
         try:
-            if self.eff_options[value] == "FedGen":
-                self.sub_string.set(self.eff_options[value])
-                Label(self.master, text="Number of Clients", bg="white").place(x=400, y=150)
-                Label(self.master, text="Learning Rate", bg="white").place(x=400, y=250)
-                Label(self.master, text="Total Epochs", bg="white").place(x=400, y=350)
-                Label(self.master, text="Dataset", bg="white").place(x=800, y=150)
-                Label(self.master, text="Alpha", bg="white").place(x=800, y=250)
-                Label(self.master, text="Sampling Rate", bg="white").place(x=800, y=350)
+            self.sub_string.set(self.eff_options[value])
+            Label(self.master, text="Number of Clients", bg="white").place(x=400, y=150)
+            Label(self.master, text="Learning Rate", bg="white").place(x=400, y=250)
+            Label(self.master, text="Total Epochs", bg="white").place(x=400, y=350)
+            Label(self.master, text="Dataset", bg="white").place(x=800, y=150)
+            Label(self.master, text="Alpha", bg="white").place(x=800, y=250)
+            Label(self.master, text="Sampling Rate", bg="white").place(x=800, y=350)
 
-                self.entry_str1 = StringVar()
-                self.entry_str2 = StringVar()
-                self.entry_str3 = StringVar()
-                self.entry_str4 = StringVar()
-                self.entry_str5 = StringVar()
-                self.entry_str6 = StringVar()
-                self.no_clients = Entry(self.master, textvariable=self.entry_str1, width=5).place(x=550, y=150)
-                self.learning_rate = Entry(self.master, textvariable=self.entry_str2, width=5).place(x=550, y=250)
-                self.total_epochs = Entry(self.master, textvariable=self.entry_str3, width=5).place(x=550, y=350)
-                self.dataset = Entry(self.master, textvariable=self.entry_str4, width=5).place(x=950, y=150)
-                self.alpha = Entry(self.master, textvariable=self.entry_str5, width=5).place(x=950, y=250)
-                self.sampling_ratio = Entry(self.master, textvariable=self.entry_str6, width=5).place(x=950, y=350)
-                
-                
+            client_var = IntVar()
+            lr_var = DoubleVar()
+            epoch_var = IntVar()
+            dataset_var = StringVar()
+            alpha_var = DoubleVar()
+            ratio_var = DoubleVar()
+            num_clients = Entry(self.master, textvariable=client_var, width=5).place(x=550, y=150)
+            learning_rate = Entry(self.master, textvariable=lr_var, width=5).place(x=550, y=250)
+            total_epochs = Entry(self.master, textvariable=epoch_var, width=5).place(x=550, y=350)
+            dataset = Entry(self.master, textvariable=dataset_var, width=5).place(x=950, y=150)
+            alpha = Entry(self.master, textvariable=alpha_var, width=5).place(x=950, y=250)
+            sampling_ratio = Entry(self.master, textvariable=ratio_var, width=5).place(x=950, y=350)
+            
+            def run_fed_gen():
+                os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Effectiveness/FedGen")
+                os.system(f"python main.py --dataset {dataset_var.get()}-alpha{alpha_var.get()}-ratio{ratio_var.get()} \
+                        --algorithm FedGen --batch_size 32 --num_glob_iters 200 \
+                        --local_epochs {epoch_var.get()} --num_users {client_var.get()} --lamda 1 --learning_rate {lr_var.get()} \
+                        --model cnn --personal_learning_rate 0.01 --times 3")
 
-                self.submit_button = Button(self.master, text="Submit").place(x=650, y=450)
+
+            submit_button = Button(self.master, text="Submit", command=run_fed_gen).place(x=650, y=450)
 
 
         except KeyError:
@@ -111,6 +116,44 @@ class App(Frame):
     def displayFairness(self, value):
         try:
             self.sub_string.set(self.fair_options[value])
+            Label(self.master, text="Total Epochs", bg="white").place(x=400, y=150)
+            Label(self.master, text="Learning Rate", bg="white").place(x=400, y=250)
+            Label(self.master, text="Batch Size", bg="white").place(x=800, y=150)
+            Label(self.master, text="Optimizer", bg="white").place(x=800, y=250)
+            Label(self.master, text="Momentum", bg="white").place(x=650, y=350)
+
+            epoch_var = IntVar()
+            lr_var = DoubleVar()
+            batch_var = IntVar()
+            opt_var = StringVar()
+            opt_options = ["Adam", "SGD"]
+            opt_var.set("Choose")
+            mom_var = DoubleVar()
+            num_epochs = Entry(self.master, textvariable=epoch_var, width=5).place(x=550, y=150)
+            learning_rate = Entry(self.master, textvariable=lr_var, width=5).place(x=550, y=250)
+            batch_size = Entry(self.master, textvariable=batch_var, width=5).place(x=950, y=150)
+
+            def get_optimizer(choice):
+                choice = opt_var.get()
+                return choice
+
+            optimizer = OptionMenu(self.master, opt_var, *opt_options, command=get_optimizer).place(x=950, y=250)
+            momentum = Entry(self.master, textvariable=mom_var, width=5).place(x=800, y=350)
+
+            def run_easyFL():
+                os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Fairness/easyFL")
+                print("Installing Requirements")
+                os.system("pip3 install requirements.txt")
+                print("Generating splited dataset")
+                os.system("python generate_fedtask.py")
+                print("Running Model")
+                os.system(f"python main.py --task mnist_client100_dist0_beta0_noise0 --model cnn --method fedavg \
+                            --num_rounds 20 --num_epochs {epoch_var.get()} --learning_rate {lr_var.get()} --proportion 0.1 --batch_size {batch_var.get()} \
+                            --train_rate 1 --eval_interval 1 --momentum {mom_var.get()} --optimizer {opt_var.get()}")
+
+
+            submit_button = Button(self.master, text="Submit", command=run_easyFL).place(x=650, y=450)
+
         except KeyError:
             self.sub_string.set(value)
 
