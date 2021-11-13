@@ -1,6 +1,7 @@
 from tkinter.ttk import *
 from tkinter import *
 import os
+import sys
 from PIL import Image, ImageTk
 import subprocess
 import logging
@@ -42,7 +43,7 @@ class App(Frame):
         # self.effectiveness_drop.config(width=20, bg='dark blue', fg="white", font=("Arial", 15))
         # self.effectiveness_drop.place(x=10, y=150)
 
-        # Privacy Dropdown
+        ## Privacy Dropdown
         # self.variable_privacy = StringVar(self.master)
         # self.variable_privacy.set("Privacy")
         # self.priv_options = {"Inverting Gradients": "Inverting Gradients"}
@@ -52,6 +53,7 @@ class App(Frame):
         # self.privacy_drop.config(width=20, bg='dark blue', fg="white", font=("Arial", 15))
         # self.privacy_drop.place(x=10, y=250)
 
+        ## Robustness Dropdown
         self.variable_rob = StringVar(self.master)
         self.variable_rob.set("Robustness")
         self.rob_options = {"Backdoor Attacks": "Backdoor Attacks", 
@@ -69,6 +71,7 @@ class App(Frame):
         self.robustness_drop.config(width=20, bg='dark blue', fg="white", font=("Arial", 15))
         self.robustness_drop.place(x=10, y=350)
 
+        ## Fairness Dropdown
         # self.variable_fair = StringVar(self.master)
         # self.variable_fair.set("Fairness")
         # self.fair_options = {"easyFL": "easyFL"}
@@ -147,9 +150,21 @@ class App(Frame):
     #         text_box.place(x=200, y=25)
 
     #         """
+    #         Function for updating the progress bar.
+    #         """
+    #         def progress_eff(process):
+    #             progressBar.start()
+
+    #             while process.poll() is None:
+    #                 progressBar.update()
+                
+    #             progressBar.stop()
+
+
+    #         """
     #         Function for running the model.
     #         """
-    #         def run_model():
+    #         def run_effectiveness():
 
     #             os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Effectiveness/FedGen")
     #             os.chdir(f"/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Effectiveness/FedGen/data/{dataset_var.get()}")
@@ -159,7 +174,7 @@ class App(Frame):
 
     #             status.set("Generating Dataset. . .")
     #             data = subprocess.Popen(data_command, stdout=subprocess.PIPE)
-    #             progress_func(data)
+    #             progress_eff(data)
 
     #             os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Effectiveness/FedGen")
 
@@ -170,23 +185,12 @@ class App(Frame):
                 
     #             status.set("Running Model. . .")
     #             result = subprocess.Popen(model_command, stdout=subprocess.PIPE)
-    #             progress_func(result)
+    #             progress_eff(result)
     #             text_box.insert(END, result.communicate()[0])
 
     #             status.set("Finished")
-
-    #         """
-    #         Function for updating the progress bar.
-    #         """
-    #         def progress_func(process):
-    #             progressBar.start()
-
-    #             while process.poll() is None:
-    #                 progressBar.update()
                 
-    #             progressBar.stop()
-                
-    #         run_button = Button(frame2, text="Run Model", command=run_model)
+    #         run_button = Button(frame2, text="Run Model", command=run_effectiveness)
     #         run_button.place(x=430, y=355)
 
     #         back_button = Button(frame2, text="Back", command=results_frame)
@@ -211,8 +215,8 @@ class App(Frame):
 
     #         Label(frame1, text="ResNet Type", fg="dark blue", bg="white", font=("Arial", 15, "bold")).place(x=315, y=360)
 
-    #         progressBar = Progressbar(frame1, mode='indeterminate', length=300, style="green.Horizontal.TProgressbar")
-    #         progressBar.place(x=320, y=325)
+    #         progressBar_privacy = Progressbar(frame1, mode='indeterminate', length=300, style="green.Horizontal.TProgressbar")
+    #         progressBar_privacy.place(x=320, y=325)
 
     #         status = StringVar(frame1)
     #         Label(frame1, textvariable=status, fg="dark blue", bg="white", font=("Arial", 15, "bold")).place(x=650, y=325)
@@ -227,9 +231,21 @@ class App(Frame):
     #         resnet = OptionMenu(frame1, resnet_var, *resnet_options, command=get_resnet).place(x=425, y=360)
 
     #         """
+    #         Function for updating the progress bar.
+    #         """
+    #         def progress_privacy(process):
+    #             progressBar_privacy.start()
+
+    #             while process.poll() is None:
+    #                 progressBar_privacy.update()
+                
+    #             progressBar_privacy.stop()
+
+
+    #         """
     #         Function for running the model.
     #         """
-    #         def run_model():
+    #         def run_privacy():
 
     #             os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/PrivacyPreserving/invertinggradients")
 
@@ -240,12 +256,12 @@ class App(Frame):
 
     #             status.set("Running Model. . .")
 
-    #             model_command = ["python3", "reconstruct_image.py", "--model", str(resnet_var.get()), "--dataset", \
+    #             priv_command = ["python3", "reconstruct_image.py", "--model", str(resnet_var.get()), "--dataset", \
     #                             "CIFAR10", "--trained_model", "--cost_fn", "sim", "--indices", "def", "--restarts", \
     #                             "32", "--save_image", "--target_id", "-1"]
                 
-    #             result = subprocess.Popen(model_command, stdout=subprocess.PIPE)
-    #             progress_func(result)
+    #             result = subprocess.Popen(priv_command, stdout=subprocess.PIPE)
+    #             progress_privacy(result)
 
     #             status.set("Finished")
 
@@ -253,19 +269,8 @@ class App(Frame):
     #             output_label = Label(frame1, image = output_image)
     #             output_label.image = output_image
     #             output_label.place(x=520, y=40)
-
-    #         """
-    #         Function for updating the progress bar.
-    #         """
-    #         def progress_func(process):
-    #             progressBar.start()
-
-    #             while process.poll() is None:
-    #                 progressBar.update()
                 
-    #             progressBar.stop()
-                
-    #         run_button = Button(frame1, text="Run Model", command=run_model)
+    #         run_button = Button(frame1, text="Run Model", command=run_privacy)
     #         run_button.place(x=425, y=400)
             
     #     except KeyError:
@@ -275,30 +280,220 @@ class App(Frame):
     Function for Robustness algorithms
     """
     # def displayRobustness(self, value):
-        # try:
-        #     self.sub_string.set(self.rob_options[value])
+    #     try:
+    #         self.sub_string.set(self.rob_options[value])
 
-        #     """
-        #     Function for updating the progress bar.
-        #     """
-        
-        #     """
-        #     Backdoor Attacks
-        #     """
-        #     # if self.rob_options[value] == "Backdoor Attacks":
-        #     #     self.welcome.set("Does not work :(")
+    #         """
+    #         Backdoor Attacks - NOT AVAILABLE
+    #         """
+    #         # if self.rob_options[value] == "Backdoor Attacks":
+    #         #     self.welcome.set("Does not work :(")
 
-        #     """
-        #     Data Poisoning Attacks
-        #     """
-            # if self.rob_options[value] == "Data Poisoning Attacks":
+    #         """
+    #         Data Poisoning Attacks
+    #         """
+    #         if self.rob_options[value] == "Data Poisoning Attacks":
+    #             self.sub_string.set(self.rob_options[value])
+
+    #             frame1 = Frame(self.master, width=900, height=450, bg="white")
+    #             frame1.place(x=250, y=100)
+
+    #             progressBar_data_poison = Progressbar(frame1, mode='indeterminate', length=300, style="green.Horizontal.TProgressbar")
+    #             progressBar_data_poison.place(x=320, y=325)
+
+    #             status = StringVar(frame1)
+    #             Label(frame1, textvariable=status, fg="dark blue", bg="white", font=("Arial", 15, "bold")).place(x=650, y=325)
+
+    #             text_box = Text(frame1, height=20, width=75, relief=RIDGE, borderwidth=2)
+    #             text_box.place(x=200, y=25)
+                
+    #             """
+    #             Function for updating the progress bar.
+    #             """
+    #             def progress_data_poison(process):
+    #               progressBar_data_poison.start()
+
+    #               while process.poll() is None:
+    #                   progressBar_data_poison.update()
+                          
+    #               progressBar_data_poison.stop()
+
+    #             """
+    #             Get Data Poisoning experiment
+    #             """
+    #             def get_experiment(choice):
+    #                 choice = experiment_var.get()
+    #                 return choice
+
+    #             experiment_var = StringVar()
+    #             experiment_options = ["Label Flipping Attack Feasibility", "Attack Timing in Label Flipping Attacks", 
+    #                                     "Malicious Participant Availability", "Defending Against Label Flipping Attacks"]
+
+    #             experiment_var.set("Choose")
+    #             experiment = OptionMenu(frame1, experiment_var, *experiment_options, command=get_experiment).place(x=425, y=360)
+                
+    #             """
+    #             Run Data Poisoning experiment
+    #             """
+    #             def run_experiment():
+    #                 os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Robustness/DataPoisoning_FL")
+
+    #                 if experiment_var.get() == "Label Flipping Attack Feasibility":
+    #                     status.set("Running Model. . .")
+
+    #                     feasibility = ["python3", "label_flipping_attack.py"]
+                        
+    #                     result = subprocess.Popen(feasibility, stdout=subprocess.PIPE, shell=False)
+    #                     progress_data_poison(result)
+    #                     out, err = result.communicate()
+    #                     logger = logging.getLogger()
+    #                     text_box.insert(END, logger.info(out))
+                        
+    #                     status.set("Finished")
+
+    #                 elif experiment_var.get() == "Attack Timing in Label Flipping Attacks":
+    #                     status.set("Running Model. . .")
+
+    #                     attack_timing = ["python3", "attack_timing.py"]
+                        
+    #                     result = subprocess.Popen(attack_timing, stdout=subprocess.PIPE, shell=False)
+    #                     progress_data_poison(result)
+    #                     out, err = result.communicate()
+    #                     logger = logging.getLogger()
+    #                     text_box.insert(END, logger.info(out))
+
+    #                     status.set("Finished")
+                    
+    #                 elif experiment_var.get() == "Malicious Participant Availability":
+    #                     status.set("Running Model. . .")
+
+    #                     malicious = ["python3", "malicious_participant_availability.py"]
+                        
+    #                     result = subprocess.Popen(malicious, stdout=subprocess.PIPE, shell=False)
+    #                     progress_data_poison(result)
+    #                     out, err = result.communicate()
+    #                     logger = logging.getLogger()
+    #                     text_box.insert(END, logger.info(out))
+
+    #                     status.set("Finished")
+                    
+    #                 else:
+    #                     if experiment_var.get() == "Defending Against Label Flipping Attacks":
+    #                         text_box.insert("Model Not Available")
+                            
+    #             exp_button = Button(frame1, text="Run Model", command=run_experiment)
+    #             exp_button.place(x=430, y=400)
+            """
+            Model Poisoning Attacks - UNLCEAR INSTRUCTIONS
+            """ 
+            # elif self.rob_options[value] == "Model Poisoning Attacks":
+            """
+            Free-rider Attacks - NOT AVAILABlE
+            """
+            # elif self.rob_options[value] == "Free-rider Attacks":
+            """
+            Inference Attacks
+            """
+            # if self.rob_options[value] == "Inference Attacks":
             #     self.sub_string.set(self.rob_options[value])
 
             #     frame1 = Frame(self.master, width=900, height=450, bg="white")
             #     frame1.place(x=250, y=100)
+            #     """
+            #     Function for updating the progress bar.
+            #     """
+            #     def progress_inference(process):
+            #       progressBar_inference.start()
 
-            #     progressBar = Progressbar(frame1, mode='indeterminate', length=300, style="green.Horizontal.TProgressbar")
-            #     progressBar.place(x=320, y=325)
+            #       while process.poll() is None:
+            #           progressBar_inference.update()
+                            
+            #       progressBar_inference.stop()
+            #     progressBar_inference = Progressbar(frame1, mode='indeterminate', length=300, style="green.Horizontal.TProgressbar")
+            #     progressBar_inference.place(x=320, y=325)
+
+            #     status = StringVar(frame1)
+            #     Label(frame1, textvariable=status, fg="dark blue", bg="white", font=("Arial", 15, "bold")).place(x=650, y=325)
+
+            #     text_box = Text(frame1, height=20, width=75, relief=RIDGE, borderwidth=2)
+            #     text_box.place(x=200, y=25)
+
+        
+            #     """
+            #     Get Data Inference experiment
+            #     """
+            #     def get_inference_attack(choice):
+            #         choice = experiment_var.get()
+            #         return choice
+
+            #     experiment_var = StringVar()
+            #     experiment_options = ["Equation Solving Attack", "Path Restriction Attack", 
+            #                             "Generative Regression Network Attack"]
+
+            #     experiment_var.set("Choose")
+            #     experiment = OptionMenu(frame1, experiment_var, *experiment_options, command=get_inference_attack).place(x=425, y=360)
+                
+            #     """
+            #     Run Data Inference experiment
+            #     """
+            #     def run_inference_attack():
+            #         if experiment_var.get() == "Equation Solving Attack":
+            #             os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Robustness/featureinference-vfl/ESA")
+
+            #             status.set("Running Model. . .")
+
+            #             esa = ["python3", "main-esa.py"]
+
+            #             result = subprocess.Popen(esa, stdout=subprocess.PIPE)
+            #             progress_inference(result)
+            #             text_box.insert(END, result.communicate()[0])
+                        
+            #             status.set("Finished")
+
+            #         elif experiment_var.get() == "Path Restriction Attack":
+            #             os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Robustness/featureinference-vfl/PRA")
+
+            #             status.set("Running Model. . .")
+
+            #             pra = ["python3", "main-pra.py"]
+                        
+            #             result = subprocess.Popen(pra, stdout=subprocess.PIPE)
+            #             progress_inference(result)
+            #             text_box.insert(END, result.communicate()[0])
+
+            #             status.set("Finished")
+                    
+            #         else:
+            #             if experiment_var.get() == "Generative Regression Network Attack":
+            #                 os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Robustness/featureinference-vfl/GRNA")
+
+            #                 status.set("Running Model. . .")
+
+            #                 grna = ["python3", "main-grna.py"]
+                            
+            #                 result = subprocess.Popen(grna, stdout=subprocess.PIPE)
+            #                 progress_inference(result)
+            #                 text_box.insert(END, result.communicate()[0])
+
+            #                 status.set("Finished")
+                            
+            #     inference_button = Button(frame1, text="Run Model", command=run_inference_attack)
+            #     inference_button.place(x=430, y=400)
+            """
+            Byzantine Robusteness - NOT AVAILABlE
+            """
+            # elif self.rob_options[value] == "Byzantine Robustness":
+            """ 
+            Sybil Robusteness
+            """
+            # elif self.rob_options[value] == "Sybil Robustness":
+            #     self.sub_string.set(self.rob_options[value])
+            
+            #     frame1 = Frame(self.master, width=900, height=450, bg="white")
+            #     frame1.place(x=250, y=100)   
+
+            #     progressBar_sybil = Progressbar(frame1, mode='indeterminate', length=300, style="green.Horizontal.TProgressbar")
+            #     progressBar_sybil.place(x=325, y=325)
 
             #     status = StringVar(frame1)
             #     Label(frame1, textvariable=status, fg="dark blue", bg="white", font=("Arial", 15, "bold")).place(x=650, y=325)
@@ -307,161 +502,114 @@ class App(Frame):
             #     text_box.place(x=200, y=25)
 
             #     """
-            #     Get Data Poisoning experiment
+            #     Function for updating the progress bar.
             #     """
-            #     def get_experiment(choice):
-            #         choice = experiment_var.get()
-            #         return choice
+            #     def progress_sybil(process):
+            #         progressBar_sybil.start()
 
-            #     experiment_var = StringVar()
-            #     experiment_options = ["Label Flipping Attack Feasibility", "Attack Timing in Label Flipping Attacks", 
-            #                             "Malicious Participant Availability", "Defending Against Label Flipping Attacks"]
-
-            #     experiment_var.set("Choose")
-            #     experiment = OptionMenu(frame1, experiment_var, *experiment_options, command=get_experiment).place(x=425, y=360)
-                
-            #     """
-            #     Run Data Poisoning experiment
-            #     """
-            #     def run_experiment():
-            #         if experiment_var.get() == "Label Flipping Attack Feasibility":
-            #             status.set("Running Model. . .")
-
-            #             feasibility = ["python3", "label_flipping_attack.py"]
-                        
-            #             result = subprocess.Popen(feasibility, stdout=subprocess.PIPE)
-            #             progress_func(result)
-            #             text_box.insert(END, logging.getLogger().setLevel(logging.INFO))
-                        
-            #             status.set("Finished")
-
-            #         elif experiment_var.get() == "Attack Timing in Label Flipping Attacks":
-            #             status.set("Running Model. . .")
-
-            #             attack_timing = ["python3", "attack_timing.py"]
-                        
-            #             result = subprocess.Popen(attack_timing, stdout=subprocess.PIPE)
-            #             progress_func(result)
-            #             text_box.insert(END, result.communicate())
-
-            #             status.set("Finished")
+            #         while process.poll() is None:
+            #             progressBar_sybil.update()
                     
-            #         elif experiment_var.get() == "Malicious Participant Availability":
-            #             status.set("Running Model. . .")
+            #         progressBar_sybil.stop()
 
-            #             malicious = ["python3", "malicious_participant_availability.py"]
-                        
-            #             result = subprocess.Popen(malicious, stdout=subprocess.PIPE)
-            #             progress_func(result)
-            #             text_box.insert(END, result.communicate())
 
-            #             status.set("Finished")
+            #     """
+            #     Function for running the model.
+            #     """
+            #     def run_sybil():
+
+            #         os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Robustness/FoolsGold/ML")
                     
-            #         else:
-            #             if experiment_var.get() == "Defending Against Label Flipping Attacks":
-            #                 text_box.insert("Model Not Available")
-                            
-            #     run_button = Button(frame1, text="Run Model", command=run_experiment)
-            #     run_button.place(x=430, y=400)
-            # elif self.rob_options[value] == "Model Poisoning Attacks":
-            # elif self.rob_options[value] == "Byzantine Attacks":
-            # elif self.rob_options[value] == "Free-rider Attacks":
-        #     if self.rob_options[value] == "Inference Attacks":
-        #         self.sub_string.set(self.rob_options[value])
+            #         sybil_command = ["python3", "code/ML_main.py", "mnist", "1000", "5_1_7"]
 
+            #         status.set("Running Model. . .")
+            #         sybil = subprocess.Popen(sybil_command, stdout=subprocess.PIPE)
+            #         progress_sybil(sybil)
+            #         text_box.insert(END, sybil.communicate()[0])
+
+            #         status.set("Finished")
+                    
+            #     run_button = Button(frame1, text="Run Model", command=run_sybil)
+            #     run_button.place(x=430, y=355)
+            # else:
+            """
+            Certified Robusteness - NOT AVAILABlE
+            """
+        #     if self.rob_options[value] == "Certified Robustness":
         #         frame1 = Frame(self.master, width=900, height=450, bg="white")
         #         frame1.place(x=250, y=100)
+        #         """
+        #         Function for updating the progress bar.
+        #         """
+        #         def progress_crfl(process):
+        #           progressBar_crfl.start()
 
-        #         progressBar = Progressbar(frame1, mode='indeterminate', length=300, style="green.Horizontal.TProgressbar")
-        #         progressBar.place(x=320, y=325)
+        #           while process.poll() is None:
+        #               progressBar_crfl.update()
+                            
+        #           progressBar_crfl.stop()
+        #         progressBar_crfl = Progressbar(frame1, mode='indeterminate', length=300, style="green.Horizontal.TProgressbar")
+        #         progressBar_crfl.place(x=320, y=325)
 
         #         status = StringVar(frame1)
         #         Label(frame1, textvariable=status, fg="dark blue", bg="white", font=("Arial", 15, "bold")).place(x=650, y=325)
 
-        #         text_box = Text(frame1, height=20, width=75, relief=RIDGE, borderwidth=2)
-        #         text_box.place(x=200, y=25)
+        #         # text_box = Text(frame1, height=20, width=75, relief=RIDGE, borderwidth=2)
+        #         # text_box.place(x=200, y=25)
 
-            """
-            Progress Bar Function
-            """
-        #   def progress_func(process):
-        #       progressBar.start()
-
-        #       while process.poll() is None:
-        #           progressBar.update()
-                            
-        #       progressBar.stop()
         
         #         """
-        #         Get Data Inference experiment
+        #         Get CRFL data
         #         """
-        #         def get_experiment(choice):
-        #             choice = experiment_var.get()
+        #         def get_crfl_data(choice):
+        #             choice = crfl_data_var.get()
         #             return choice
 
-        #         experiment_var = StringVar()
-        #         experiment_options = ["Equation Solving Attack", "Path Restriction Attack", 
-        #                                 "Generative Regression Network Attack"]
+        #         crfl_data_var = StringVar()
+        #         crfl_data_options = ["mnist", "emnist", "loan"]
 
-        #         experiment_var.set("Choose")
-        #         experiment = OptionMenu(frame1, experiment_var, *experiment_options, command=get_experiment).place(x=425, y=360)
+        #         crfl_data_var.set("Choose")
+        #         experiment = OptionMenu(frame1, crfl_data_var, *crfl_data_options, command=get_crfl_data).place(x=425, y=360)
                 
         #         """
-        #         Run Data Inference experiment
+        #         Run CRFL experiment
         #         """
-        #         def run_experiment():
-        #             if experiment_var.get() == "Equation Solving Attack":
-        #                 os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Robustness/featureinference-vfl/ESA")
+        #         def run_crfl():
+        #             os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Robustness/CRFL")
+        #             os.system("source", "activate", "crfl")
 
-        #                 status.set("Running Model. . .")
+        #             status.set("Running Model. . .")
 
-        #                 esa = ["python3", "main-esa.py"]
+        #             training = [f"python3", "main.py", "--params", "configs/" + {crfl_data_var.get()} + "_params.py"]
 
-        #                 result = subprocess.Popen(esa, stdout=subprocess.PIPE)
-        #                 progress_func(result)
-        #                 text_box.insert(END, result.communicate()[0])
-                        
-        #                 status.set("Finished")
-
-        #             elif experiment_var.get() == "Path Restriction Attack":
-        #                 os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Robustness/featureinference-vfl/PRA")
-
-        #                 status.set("Running Model. . .")
-
-        #                 pra = ["python3", "main-pra.py"]
-                        
-        #                 result = subprocess.Popen(pra, stdout=subprocess.PIPE)
-        #                 progress_func(result)
-        #                 text_box.insert(END, result.communicate()[0])
-
-        #                 status.set("Finished")
+        #             training_result = subprocess.Popen(training, stdout=subprocess.PIPE)
+        #             progress_crfl(training_result)
+        #             #text_box.insert(END, training_result.communicate()[0])
                     
-        #             else:
-        #                 if experiment_var.get() == "Generative Regression Network Attack":
-        #                     os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Robustness/featureinference-vfl/GRNA")
+        #             status.set("Smoothing Parameters. . .")
 
-        #                     status.set("Running Model. . .")
+        #             smoothing = [f"python3", "smooth_" + {crfl_data_var.get()} + ".py"]
 
-        #                     grna = ["python3", "main-grna.py"]
+        #             smoothing_result = subprocess.Popen(smoothing, stdout=subprocess.PIPE)
+        #             progress_crfl(smoothing_result)
+
+        #             status.set("Plotting. . .")
+
+        #             plotting = [f"python3", "certify_" + {crfl_data_var.get()} + ".py"]
+
+        #             plotting_result = subprocess.Popen(plotting, stdout=subprocess.PIPE)
+        #             progress_crfl(plotting_result)
+
+        #             status.set("Finished")
                             
-        #                     result = subprocess.Popen(grna, stdout=subprocess.PIPE)
-        #                     progress_func(result)
-        #                     text_box.insert(END, result.communicate()[0])
+        #         inference_button = Button(frame1, text="Run Model", command=run_crfl)
+        #         inference_button.place(x=430, y=400)
 
-        #                     status.set("Finished")
-                            
-        #         run_button = Button(frame1, text="Run Model", command=run_experiment)
-        #         run_button.place(x=430, y=400)
-        #     # elif self.rob_options[value] == "Byzantine Robustness":
-        #     # elif self.rob_options[value] == "Sybil Robustness":
-        #     # else:
-        #     #     if self.rob_options[value] == "Certified Robustness":
-
-        # except KeyError:
-        #     self.sub_string.set(value)
+        except KeyError:
+            self.sub_string.set(value)
     
     """
-    Function for easyFL algorithm
+    Function for easyFL algorithm - DOES NOT WORK
     """
     # def displayFairness(self, value):
     #     try:
@@ -516,8 +664,8 @@ class App(Frame):
     #         submit_button = Button(frame1, text="Save Results", command=entry_frame)
     #         submit_button.place(x=450, y=400)
 
-    #         progressBar = Progressbar(frame2, mode='indeterminate', length=300, style="green.Horizontal.TProgressbar")
-    #         progressBar.place(x=325, y=325)
+    #         progressBar_fair = Progressbar(frame2, mode='indeterminate', length=300, style="green.Horizontal.TProgressbar")
+    #         progressBar_fair.place(x=325, y=325)
 
     #         status = StringVar(frame2)
     #         Label(frame2, textvariable=status, fg="dark blue", bg="white", font=("Arial", 15, "bold")).place(x=650, y=325)
@@ -529,13 +677,13 @@ class App(Frame):
     #         """
     #         def run_easyFL():
                 
-    #             def progress_func(process):
-    #                 progressBar.start()
+    #             def progress_func_fair(process):
+    #                 progressBar_fair.start()
 
     #                 while process.poll() is None:
-    #                     progressBar.update()
+    #                     progressBar_fair.update()
                     
-    #                 progressBar.stop()
+    #                 progressBar_fair.stop()
 
     #             os.chdir("/Users/claytonhaley/Desktop/COMP6130/FinalProject/COMP6130_Group4/Fairness/easyFL")
                 
@@ -543,13 +691,13 @@ class App(Frame):
 
     #             status.set("Installing Requirements. . .")
     #             req = subprocess.Popen(requirements, stdout=subprocess.PIPE)
-    #             progress_func(req)
+    #             progress_func_fair(req)
 
     #             data_command = ["python3", "generate_fedtask.py"]
                 
     #             status.set("Generating Data. . .")
     #             data = subprocess.Popen(data_command, stdout=subprocess.PIPE)
-    #             progress_func(data)
+    #             progress_func_fair(data)
 
     #             run_model = ["python3", "main.py", "--task", "mnist_client100_dist0_beta0_noise0", "--model" "cnn", "--method", "fedavg", \
     #                     "--num_rounds", "20", "--num_epochs", str({epoch_var.get()}), "--learning_rate", str(lr_var.get()), "--proportion", "0.1", "--batch_size", str(batch_var.get()), \
@@ -557,7 +705,7 @@ class App(Frame):
 
     #             status.set("Running Model. . .")
     #             model = subprocess.Popen(run_model, stdout=subprocess.PIPE)
-    #             progress_func(model)
+    #             progress_func_fair(model)
     #             text_box.insert(END, model.communicate()[0])
 
     #             status.set("Finished")
