@@ -790,7 +790,7 @@ class App(Frame):
 
                 status.set("Running Model. . .")
                 model = subprocess.Popen(run_model, stdout=subprocess.PIPE)
-                progress_func_fair(model)
+                progress_func_fair(model) 
                 text_box.insert(END, model.communicate()[0])
 
                 status.set("Finished")
